@@ -11,6 +11,9 @@ Meteor.methods({
       // Match.Where allows us to run a custom validation (below). If it returns a truthy value, then 'check' will pass
       // isUri is from valid-url package. If valid, returns url. If invalid, returns 'undefined'.
     check(url, Match.Where(url => validUrl.isUri(url)));
+    // If check does not fail, we can save the url and generate a shorter token
+    const token = Math.random().toString(36).slice(-5);
+    Links.insert({ url, token, clicks: 0 });
   }
 });
 
