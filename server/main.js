@@ -23,6 +23,10 @@ function onRoute(req, res, next) {
   const link = Links.findOne({ token: req.params.token });
   // If we find a link object, redirect the user to the long url
   if (link) {
+    // Increment the link click counter using Mongo modifiers
+      // Mongo modifiers are a convention on how to update records in a Mongo database
+      // They are JS objects that describe a precise action to take on a record we are updating (http://docs.meteor.com/api/collections.html#modifiers)
+    Links.update(link, { $inc: { clicks: 1 }});
     // Set the status code of the response to 307 (redirect request) and provide the url to redirect to
     res.writeHead(307, { 'Location': link.url });
     // Ready to send the response back
